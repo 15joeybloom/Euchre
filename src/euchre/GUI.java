@@ -41,9 +41,9 @@ public class GUI extends JFrame
 
 
     private JMenuBar menuBar;
-        private JMenu fileMenu;
+//        private JMenu fileMenu;
             private JMenuItem newGame;
-        private JMenu editMenu;
+//        private JMenu editMenu;
 
     private JPanel gamePanel;
         private JLabel[][] cardLabels;
@@ -73,7 +73,7 @@ public class GUI extends JFrame
         for(int i = 0; i < 4; i++)
         {
 
-            SPEECH_BUBBLES[i] = new ImageIcon(GUI.class.getResource("imgs/speechBubbles/" + i + ".png"));
+            SPEECH_BUBBLES[i] = new ImageIcon(GUI.class.getResource("speechBubbles." + i + ".png"));
 
             if(SPEECH_BUBBLES[i] == null)
             {
@@ -89,7 +89,7 @@ public class GUI extends JFrame
         BufferedImage img;
         try
         {
-            img = ImageIO.read(Card.class.getResource("imgs/suits/suits.png"));
+            img = ImageIO.read(Card.class.getResource("suits.png"));
         }
         catch(IOException e)
         {
@@ -129,13 +129,14 @@ public class GUI extends JFrame
     private void setUpMenuBar()
     {
         menuBar = new JMenuBar();
-            fileMenu = new JMenu("File");
+//            fileMenu = new JMenu("File");
                 newGame = new JMenuItem("New Game");
                 newGame.addActionListener(new NewGameListener());
-                fileMenu.add(newGame);
-            editMenu = new JMenu("Edit");
-            menuBar.add(fileMenu);
-            menuBar.add(editMenu);
+//                fileMenu.add(newGame);
+//            editMenu = new JMenu("Edit");
+//            menuBar.add(fileMenu);
+//            menuBar.add(editMenu);
+        menuBar.add(newGame);
 
         setJMenuBar(menuBar);
     }
@@ -190,7 +191,10 @@ public class GUI extends JFrame
             speechLabels[i].setHorizontalTextPosition(SwingConstants.CENTER);
             speechLabels[i].setVerticalTextPosition(SwingConstants.CENTER);
             speechLabels[i].setIconTextGap(0);
-            speechLabels[i].setForeground(FELT_COLOR);
+            speechLabels[i].setForeground(
+//                FELT_COLOR
+                Color.blue
+            );
 
             gamePanel.add(speechLabels[i]);
         }

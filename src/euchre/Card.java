@@ -44,7 +44,7 @@ public class Card
         BufferedImage img;
         try
         {
-            img = ImageIO.read(Card.class.getResource("imgs/cards.png"));
+            img = ImageIO.read(Card.class.getResource("cards.png"));
 
         }
         catch(IOException e)
