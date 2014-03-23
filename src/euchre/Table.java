@@ -4,24 +4,24 @@ import java.util.*;
 import java.util.Arrays;
 
 /**
- * @author Joey Bloom
- *
+ @author Joey Bloom
+ <p>
  */
 public class Table
 {
-    private Player[]    players;
+    private Player[] players;
 
-    private int         dealer;     //absolute
-    private int         leader;     //absolute
-    private int         caller;     //absolute
-    private int         leftOut;    //absolute
+    private int dealer;     //absolute
+    private int leader;     //absolute
+    private int caller;     //absolute
+    private int leftOut;    //absolute
 
-    private EuchreDeck  deck;
+    private EuchreDeck deck;
 
-    private int[]       handScore;
-    private int[]       gameScore;
+    private int[] handScore;
+    private int[] gameScore;
 
-    private byte        trump;
+    private byte trump;
 
     private static final int SOUTH = 0;
     private static final int WEST = 1;
@@ -29,21 +29,21 @@ public class Table
     private static final int EAST = 3;
 
     /**
-     * Used to access the score of the north south team
+     Used to access the score of the north south team
      */
     public static final int NORTH_SOUTH = 0;
     /**
-     * Used to access the score of the east west team
+     Used to access the score of the east west team
      */
     public static final int EAST_WEST = 1;
 
-
     /**
-     * Constructs a player with 4 players, each at the four different positions
-     * @param south north's partner
-     * @param west east's partner
-     * @param north south's partner
-     * @param east west's partner
+     Constructs a table with 4 players, each at the four different positions
+     <p>
+     @param south north's partner
+     @param west  east's partner
+     @param north south's partner
+     @param east  west's partner
      */
     public Table(Player south, Player west, Player north, Player east)
     {
@@ -55,27 +55,32 @@ public class Table
         deck = new EuchreDeck();
         deck.shuffle();
         dealer = 0;
-        handScore = new int[]{0,0};
-        gameScore = new int[]{0,0};
+        handScore = new int[]
+        {
+            0, 0
+        };
+        gameScore = new int[]
+        {
+            0, 0
+        };
     }
 
     /**
-     * {@inheritDoc}
+     {@inheritDoc}
      */
     @Override
     public String toString()
     {
-        return "South: " + players[SOUTH] +
-               "\nWest: " + players[WEST] +
-               "\nNorth: " + players[NORTH] +
-               "\nEast: " + players[EAST] +
-               "\n";
+        return "South: " + players[SOUTH] + "\nWest: " + players[WEST]
+            + "\nNorth: " + players[NORTH] + "\nEast: " + players[EAST] + "\n";
     }
 
     private byte jackPlayer = -1;
+
     /**
-     * Call this to begin jacking off.
-     * @see jackOff()
+     Call this to begin jacking off.
+     <p>
+     @see jackOff()
      */
     public void beginJackOff()
     {
@@ -85,9 +90,10 @@ public class Table
     }
 
     /**
-     * Returns the next Card dealt in the
-     * "Jack off" or null if the jack off is over
-     * @return next Card in Jackoff or null
+     Returns the next Card dealt in the
+     "Jack off" or null if the jack off is over
+     <p>
+     @return next Card in Jackoff or null
      */
     public Card jackOff()
     {
@@ -110,9 +116,10 @@ public class Table
     }
 
     /**
-     * Returns true if either team's score
-     * is 10 or greater, false otherwise
-     * @return true if the game is over, false otherwise
+     Returns true if either team's score
+     is 10 or greater, false otherwise
+     <p>
+     @return true if the game is over, false otherwise
      */
     public boolean gameOver()
     {
@@ -128,19 +135,23 @@ public class Table
     }
 
     /**
-     * Deals a full 5 Card Hand to each player, and returns the top
-     * Card of the kitty, and resets the Table.
-     *
-     * The Table's deck is reset, shuffled, and then Cards are
-     * dealt using the standard 23233232 pattern. The Hand
-     * score is reset. Going alone and leader are reset.
-     * @return the top Card of the kitty
+     Deals a full 5 Card Hand to each player, and returns the top
+     Card of the kitty, and resets the Table.
+     <p>
+     The Table's deck is reset, shuffled, and then Cards are
+     dealt using the standard 23233232 pattern. The Hand
+     score is reset. Going alone and leader are reset.
+     <p>
+     @return the top Card of the kitty
      */
     public Card dealNewRound()
     {
-        handScore = new int[]{0,0};
+        handScore = new int[]
+        {
+            0, 0
+        };
         leftOut = -1;
-        leader = (dealer + 1)%4;
+        leader = (dealer + 1) % 4;
         for(Player p : players)
         {
             p.getHand().clear();
@@ -148,11 +159,14 @@ public class Table
 
         deck = new EuchreDeck();
         deck.shuffle();
-        int[] dealNums = {2,3,2,3,3,2,3,2};
+        int[] dealNums =
+        {
+            2, 3, 2, 3, 3, 2, 3, 2
+        };
         Player[] temp = getBidPlayers();
         for(int i = 0; i < 8; i++)
         {
-            Player p = temp[(i+dealer)%4];
+            Player p = temp[i % 4];
             int x = dealNums[i];
             for(int j = 0; j < x; j++)
             {
@@ -163,22 +177,34 @@ public class Table
     }
 
     /**
-     * Returns the Players in the order they bid
-     * @return  the Players, starting with the Player to
-     *          the left of the dealer and ending with
-     *          the dealer.
+     Returns the Players in the order they bid
+     <p>
+     @return the Players, starting with the Player to
+     the left of the dealer and ending with
+     the dealer.
      */
     public Player[] getBidPlayers()
     {
         Player[] temp = new Player[4];
         System.arraycopy(players, 0, temp, 0, 4);
-        Collections.rotate(Arrays.asList(temp),3-dealer);
+        Collections.rotate(Arrays.asList(temp), 3 - dealer);
         return temp;
     }
 
     /**
-     * Returns the dealer
-     * @return  the dealer
+     Returns the seat of the dealer
+     <p>
+     @return SOUTH, WEST, NORTH, or EAST
+     */
+    public int getDealerSeat()
+    {
+        return dealer;
+    }
+
+    /**
+     Returns the dealer
+     <p>
+     @return the dealer
      */
     public Player getDealer()
     {
@@ -186,15 +212,17 @@ public class Table
     }
 
     /**
-     * Sets the trump for the hand
-     * @param   suit    one of the suit constants in Card
-     * @param   p       the Player that called trump
-     * @see Card
+     Sets the trump for the hand
+     <p>
+     @param suit  one of the suit constants in Card
+     @param p     the Player that called trump
+     @param alone true iff p said "I'm going alone"
+     @see Card
      */
     public void setTrump(int suit, Player p, boolean alone)
     {
-        trump = (byte)suit;
-        caller = indexOfPlayer(p);
+        trump = (byte) suit;
+        caller = seatOfPlayer(p);
         if(alone)
         {
             goAlone(caller);
@@ -202,9 +230,10 @@ public class Table
     }
 
     /**
-     * Tells the Table that the Player is going alone
-     * @param p     the position of the Player that is going alone,
-     *              expressed as number of seats to the left of dealer.
+     Tells the Table that the Player is going alone
+     <p>
+     @param p the position of the Player that is going alone,
+     expressed as number of seats to the left of dealer.
      */
     private void goAlone(int p)
     {
@@ -214,13 +243,14 @@ public class Table
         //leader to next Player to the left
         if(leader == leftOut)
         {
-            leader = (leader+1)%4;
+            leader = (leader + 1) % 4;
         }
     }
 
     /**
-     * Returns the current trump suit
-     * @return trump, one of the suit constants in Card
+     Returns the current trump suit
+     <p>
+     @return trump, one of the suit constants in Card
      */
     public int getTrump()
     {
@@ -228,20 +258,22 @@ public class Table
     }
 
     /**
-     * Returns true if the hand is over, or false otherwise
-     * @return true if the hand is over
+     Returns true if the hand is over, or false otherwise
+     <p>
+     @return true if the hand is over
      */
     public boolean handOver()
     {
-        return handScore[0] + handScore[1] >=5;
+        return handScore[0] + handScore[1] >= 5;
     }
 
     /**
-     * Returns the Players participating in the next trick, in
-     * the order in which they will participate.
-     * @return  the Players in the next trick, taking order and any
-     *          going alone into account. The size of the returned
-     *          array will be 3 or 4.
+     Returns the Players participating in the next trick, in
+     the order in which they will participate.
+     <p>
+     @return the Players in the next trick, taking order and any
+     going alone into account. The size of the returned
+     array will be 3 or 4.
      */
     public Player[] getTrickPlayers()
     {
@@ -251,7 +283,7 @@ public class Table
             returnMe = new Player[4];
             for(int i = 0; i < 4; i++)
             {
-                returnMe[i] = players[(leader+i)%4];
+                returnMe[i] = players[(leader + i) % 4];
             }
         }
         else
@@ -263,40 +295,40 @@ public class Table
                 {
                     j++;
                 }
-                returnMe[i] = players[(j+leader)%4];
+                returnMe[i] = players[(j + leader) % 4];
             }
         }
         return returnMe;
     }
 
     /**
-     * Call this method to give the table a completed Trick, with
-     * the Cards played in the order returned by getTrickPlayers().
-     * getTrickPlayers(), after calling this method, will use
-     * the winner of the trick passed to this method as the leader
-     * of the trick. The hand score is also updated appropriately.
-     *
-     * @param   trick
-     *          the Trick played by the players as returned by
-     *          getTrickPlayers()
-     *
-     * @return  the Player that won the trick
-     * @see     getTrickPlayers()
+     Call this method to give the table a completed Trick, with
+     the Cards played in the order returned by getTrickPlayers().
+     getTrickPlayers(), after calling this method, will use
+     the winner of the trick passed to this method as the leader
+     of the trick. The hand score is also updated appropriately.
+     <p>
+     @param trick
+     the Trick played by the players as returned by
+     getTrickPlayers()
+     <p>
+     @return the Player that won the trick
+     @see getTrickPlayers()
      */
     public Player trick(Trick trick)
     {
         int winI = trick.winner();
         Player p = getTrickPlayers()[winI];
-        leader = indexOfPlayer(p);
-        handScore[leader%2]++;
+        leader = seatOfPlayer(p);
+        handScore[leader % 2]++;
         return p;
     }
 
     /**
-     * @param p Player to search for
-     * @return the index of p or -1 if not found
+     @param p Player to search for
+     @return the seat (SOUTH, WEST, NORTH, or EAST) of p or -1 if not found
      */
-    private int indexOfPlayer(Player p)
+    private int seatOfPlayer(Player p)
     {
         for(int i = 0; i < 4; i++)
         {
@@ -309,13 +341,14 @@ public class Table
     }
 
     /**
-     * Returns the score of the current hand, as an
-     * array of size two, of the form {south-north, west-east}
-     * @return  the score of the hand. One accesses
-     *          scores using the NORTH_SOUTH and EAST-WEST
-     *          constants.
-     *
-     * @see NORTH_SOUTH, EAST_WEST
+     Returns the score of the current hand, as an
+     array of size two, of the form {south-north, west-east}
+     <p>
+     @return the score of the hand. One accesses
+     scores using the NORTH_SOUTH and EAST-WEST
+     constants.
+     <p>
+     @see NORTH_SOUTH, EAST_WEST
      */
     public int[] handScore()
     {
@@ -323,12 +356,13 @@ public class Table
     }
 
     /**
-     * Returns the result of the hand, including
-     * who won, how they won, who won points, and
-     * how many points they won. Only call this method
-     * once per hand at the end of the hand; it increments
-     * the score and dealer position as well.
-     * @return result of the hand
+     Returns the result of the hand, including
+     who won, how they won, who won points, and
+     how many points they won. Only call this method
+     once per hand at the end of the hand; it increments
+     the score and dealer position as well.
+     <p>
+     @return result of the hand
      */
     public String handResultString()
     {
@@ -336,74 +370,85 @@ public class Table
         {
             return "";
         }
-        dealer = (dealer + 1)%4;
+        dealer = (dealer + 1) % 4;
         String returnMe = "";
-        int i = caller%2;
+        int i = caller % 2;
         Player call = players[caller];
-        String callerTeamName = call + " and " + players[(caller+2)%4];
-        String defendingTeamName = players[(caller+1)%4] + " and " + players[(caller+3)%4];
+        String callerTeamName = call + " and " + players[(caller + 2) % 4];
+        String defendingTeamName = players[(caller + 1) % 4] + " and "
+            + players[(caller + 3) % 4];
         if(leftOut == -1)
         {
-            switch(handScore[caller%2])
+            switch(handScore[caller % 2])
             {
                 case 0:
-                    gameScore[1-i] += 4;
-                    returnMe = callerTeamName + " were swept. 4 points to " + defendingTeamName + ".";
+                    gameScore[1 - i] += 4;
+                    returnMe = callerTeamName + " were swept. 4 points to "
+                        + defendingTeamName + ".";
                     break;
                 case 1:
                 case 2:
-                    gameScore[1-i] += 2;
-                    returnMe = callerTeamName + " were euched. 2 points to " + defendingTeamName + ".";
+                    gameScore[1 - i] += 2;
+                    returnMe = callerTeamName + " were euched. 2 points to "
+                        + defendingTeamName + ".";
                     break;
                 case 3:
                 case 4:
                     gameScore[i] += 1;
-                    returnMe = callerTeamName + " made the bid. 1 point to " + callerTeamName + ".";
+                    returnMe = callerTeamName + " made the bid. 1 point to "
+                        + callerTeamName + ".";
                     break;
                 case 5:
                     gameScore[i] += 2;
-                    returnMe = callerTeamName + " swept. 2 points to " + callerTeamName + ".";
+                    returnMe = callerTeamName + " swept. 2 points to "
+                        + callerTeamName + ".";
                     break;
                 default:
-                    Math.round(0/0);
+                    Math.round(0 / 0);
             }
         }
         else //going alone
         {
-            switch(handScore[caller%2])
+            switch(handScore[caller % 2])
             {
                 case 0:
-                    gameScore[1-i] += 8;
-                    returnMe = call + " went alone and was swept. 8 points to " + defendingTeamName;
+                    gameScore[1 - i] += 8;
+                    returnMe = call + " went alone and was swept. 8 points to "
+                        + defendingTeamName;
                     break;
                 case 1:
                 case 2:
-                    gameScore[1-i] += 4;
-                    returnMe = call + " went alone and was euched. 4 points to " + defendingTeamName;
+                    gameScore[1 - i] += 4;
+                    returnMe = call + " went alone and was euched. 4 points to "
+                        + defendingTeamName;
                     break;
                 case 3:
                 case 4:
                     gameScore[i] += 1;
-                    returnMe = call + " went alone and made the bid. 1 point to " + callerTeamName;
+                    returnMe = call
+                        + " went alone and made the bid. 1 point to "
+                        + callerTeamName;
                     break;
                 case 5:
                     gameScore[i] += 4;
-                    returnMe = call + " went alone and swept. 4 points to " + callerTeamName;
+                    returnMe = call + " went alone and swept. 4 points to "
+                        + callerTeamName;
                     break;
                 default:
-                    Math.round(0/0);
+                    Math.round(0 / 0);
             }
         }
         return returnMe;
     }
 
     /**
-     * Returns the score of the game, as an
-     * array of size two, of the form
-     * {south-north, west-east}
-     * @return  the score of the game. One accesses
-     *          scores using the NORTH_SOUTH and EAST-WEST
-     *          constants.
+     Returns the score of the game, as an
+     array of size two, of the form
+     {south-north, west-east}
+     <p>
+     @return the score of the game. One accesses
+     scores using the NORTH_SOUTH and EAST-WEST
+     constants.
      */
     public int[] gameScore()
     {
@@ -411,21 +456,24 @@ public class Table
     }
 
     /**
-     * Returns a String telling who won, iff gameOver() is true.
-     * @return
+     Returns a String telling who won, iff gameOver() is true.
+     <p>
+     @return
      */
     public String gameResultString()
     {
         String returnMe = "";
-        if(!gameOver()){}
+        if(!gameOver())
+        {
+        }
         else if(gameScore[NORTH_SOUTH] >= 10)
-        {
-            returnMe = players[NORTH] + " and " + players[SOUTH] + " won!";
-        }
-        else
-        {
-            returnMe = players[WEST] + " and " + players[EAST] + " won!";
-        }
+            {
+                returnMe = players[NORTH] + " and " + players[SOUTH] + " won!";
+            }
+            else
+            {
+                returnMe = players[WEST] + " and " + players[EAST] + " won!";
+            }
         return returnMe;
     }
 
@@ -435,7 +483,7 @@ public class Table
         Player w = new AIPlayer("West");
         Player n = new AIPlayer("North");
         Player e = new AIPlayer("East");
-        Table table = new Table(s,w,n,e);
+        Table table = new Table(s, w, n, e);
 
         Card kitty = table.dealNewRound();
 
