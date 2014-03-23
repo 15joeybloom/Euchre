@@ -49,9 +49,10 @@ public class GUI extends JFrame
         private JLabel[][] cardLabels;
         private JLabel[] speechLabels;
         private JLabel[] trickLabels;
+        private JLabel[] dealerChipLabels;
         private JLabel trumpLabel;
     private JSlider speedSlider;
-    private JPanel infoPanel;
+//    private JPanel infoPanel;
 
     private Table table;
     private Player[] players;
@@ -82,6 +83,7 @@ public class GUI extends JFrame
             }
         }
     }
+    private static final ImageIcon DEALER_CHIP = new ImageIcon(GUI.class.getResource("dealerChip.png"));
     private static final Color FELT_COLOR = new Color(0x006600);
     private static final BufferedImage SUITS;
     static
@@ -104,7 +106,10 @@ public class GUI extends JFrame
     public GUI()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+        BorderLayout layout = new BorderLayout(10,10);
+        layout.setHgap(0);
+        layout.setVgap(0);
+        setLayout(layout);
         setTitle("Euchre");
         setResizable(false);
         getContentPane().setBackground(FELT_COLOR);
@@ -115,10 +120,11 @@ public class GUI extends JFrame
             setUpCardLabels();
             setUpSpeechLabels();
             setUpTrickLabels();
+            setUpDealerChipLabels();
             setUpTrumpLabel();
         setUpSpeedSlider();
 
-        setSize(713,651); //this makes the contentPane exactly 600x600
+        setSize(703,651); //this makes the contentPane exactly 600x600
         setVisible(true);
 //        System.out.println(gamePanel.getHeight());
 //        System.out.println(gamePanel.getWidth());
@@ -145,6 +151,7 @@ public class GUI extends JFrame
     {
         gamePanel = new JPanel();
         gamePanel.setPreferredSize(new Dimension(600,600));
+        gamePanel.setBorder(null);
         gamePanel.setLayout(null);
         gamePanel.setBackground(FELT_COLOR);
 
@@ -215,6 +222,21 @@ public class GUI extends JFrame
                 xs[i], ys[i]);
 
             gamePanel.add(trickLabels[i]);
+        }
+    }
+
+    private void setUpDealerChipLabels()
+    {
+        int[] xs = {387, 0, 177, 564};
+        int[] ys = {564, 387, 0, 177};
+        dealerChipLabels = new JLabel[4];
+        for(int i = 0; i < 4; i++)
+        {
+            dealerChipLabels[i] = new JLabel();
+            dealerChipLabels[i].setSize(36,36);
+            dealerChipLabels[i].setLocation(xs[i],ys[i]);
+
+            gamePanel.add(dealerChipLabels[i]);
         }
     }
 
@@ -552,7 +574,7 @@ public class GUI extends JFrame
                 game:
                 while(!table.gameOver())
                 {
-                    //TODO dealer chip code here
+                    dealerChipLabels[table.getDealerSeat()].setIcon(DEALER_CHIP);
                     Card kitty = table.dealNewRound();
                     Player[] bidPlayers = table.getBidPlayers();
                     trickLabels[0].setIcon(kitty.getImageIcon()); //show kitty
@@ -673,6 +695,8 @@ public class GUI extends JFrame
                         }
                     }//end play
 
+                    dealerChipLabels[table.getDealerSeat()].setIcon(null);
+                        //remove dealer chip from previous dealer
                     String handOverMsg = "";
                     handOverMsg += "Hand over.";
                     int[] handScore = table.handScore();
